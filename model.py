@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask import jsonify 
 
 
 db = SQLAlchemy()
@@ -12,14 +13,22 @@ class Vendors(db.Model):
 	billing_address = db.Column(db.Text)
 	account_number = db.Column(db.String)
 
+	def json(self):
+		return { 
+			'vendor_id': self.vendor_id,
+			'vendor_name': self.vendor_name,
+			'billing_address': self.billing_address,
+			'account_number': self.account_number
+			}
+
 class Payment(db.Model):
 
 	__tablename__ = "payments"
 
 	payment_id = db.Column(db.Integer, primary_key=True)
 	amount = db.Column(db.Integer)
-	date = db.Column(db.Date)
-	payment_type = db.Column(db.Integer, db.ForeignKey('payment_type.payment_id'))
+	date = db.Column(db.Text)
+	payment_type = db.Column(db.Integer, db.ForeignKey('payment_types.payment_id'))
 
 class Payment_type(db.Model):
 

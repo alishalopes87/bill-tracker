@@ -14,10 +14,10 @@ def load_invoices():
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate invoices
-    Invoices.query.delete()
+    Invoice.query.delete()
 
     # Read invoice file and insert data
-    for row in open("seed_data/invoice"):
+    for row in open("seed_data/invoice.txt"):
         row = row.rstrip()
         vendor_id, invoice_number, amount, payment_id = row.split(",")
 
@@ -43,11 +43,11 @@ def load_vendors():
     Vendors.query.delete()
 
     # Read vendor file and insert data
-    for row in open("seed_data/vendor"):
+    for row in open("seed_data/vendor.txt"):
         row = row.rstrip()
-        vendor_name, vendor_billto, account_number = row.split(",")
+        vendor_name, billing_address, account_number = row.split(",")
 
-        vendor = Vendor(vendor_name=vendor_name,
+        vendor = Vendors(vendor_name=vendor_name,
                     billing_address=billing_address,
                     account_number=account_number)
 
@@ -65,10 +65,10 @@ def load_payments():
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate payments
-    Payments.query.delete()
+    Payment.query.delete()
 
     # Read payment file and insert data
-    for row in open("seed_data/payment"):
+    for row in open("seed_data/payment.txt"):
         row = row.rstrip()
         amount, date, payment_type = row.split(",")
 
@@ -90,14 +90,14 @@ def load_payment_types():
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate payment types
-    Pmt_Types.query.delete()
+    Payment_type.query.delete()
 
     # Read payment file and insert data
-    for row in open("seed_data/pmt_type"):
+    for row in open("seed_data/pmt_type.txt"):
         row = row.rstrip()
-        details = row.split(",")
-
-        pmt_type = Pmt_Types(details=details)
+        # details = row.split(",")
+        details = row
+        pmt_type = Payment_type(details=details)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(pmt_type)
