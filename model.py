@@ -19,7 +19,7 @@ class Payment(db.Model):
 	payment_id = db.Column(db.Integer, primary_key=True)
 	amount = db.Column(db.Integer)
 	date = db.Column(db.Date)
-	payment_id = db.Column(db.Integer, db.ForeignKey('payment_type.payment_id'))
+	payment_type = db.Column(db.Integer, db.ForeignKey('payment_type.payment_id'))
 
 class Payment_type(db.Model):
 

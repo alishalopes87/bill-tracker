@@ -1,15 +1,19 @@
-from flask import Flask 
+from flask import Flask, jsonify
 from model import *
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/vendors')
 def get_vendors():
 
 	vendors = Vendor.query.all()
 
-	return render_template('vendors.html', vendors=vendors)
+	return jsonify(**vendors)
+
+# @app.route('/payment', methods=["POST"])
+# def add_payment():
+
 
 
 if __name__ == "__main__":
