@@ -1,8 +1,9 @@
 from flask import Flask, jsonify,json
+from flask_cors import CORS
 from model import *
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/vendors')
 def get_vendors():
