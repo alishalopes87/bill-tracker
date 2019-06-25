@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/vendors')
 def get_vendors():
 
-	vendors = Vendors.query.all()
+	vendors = Vendor.query.all()
 	json_vendors = []
 
 	for vendor in vendors:
