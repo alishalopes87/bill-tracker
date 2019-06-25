@@ -4,48 +4,48 @@ from flask import jsonify
 
 db = SQLAlchemy()
 
-class Vendors(db.Model):
+class Vendor(db.Model):
 
 	__tablename__ = "vendors"
 
-	vendor_id = db.Column(db.Integer, primary_key=True)
-	vendor_name = db.Column(db.Text)
-	billing_address = db.Column(db.Text)
-	account_number = db.Column(db.String)
+	vend_id = db.Column(db.Integer, primary_key=True)
+	vend_name = db.Column(db.Text)
+	vend_address = db.Column(db.Text)
+	user_vend_account = db.Column(db.String)
 
 	def json(self):
 		return { 
-			'vendor_id': self.vendor_id,
-			'vendor_name': self.vendor_name,
-			'billing_address': self.billing_address,
-			'account_number': self.account_number
+			'vend_id': self.vend_id,
+			'vend_name': self.vend_name,
+			'vend_address': self.vend_address,
+			'user_vend_account': self.user_vend_account
 			}
 
 class Payment(db.Model):
 
 	__tablename__ = "payments"
 
-	payment_id = db.Column(db.Integer, primary_key=True)
-	amount = db.Column(db.Integer)
-	date = db.Column(db.Text)
-	payment_type = db.Column(db.Integer, db.ForeignKey('payment_types.payment_id'))
+	pmt_id = db.Column(db.Integer, primary_key=True)
+	pmt_amt = db.Column(db.Integer)
+	pmt_date = db.Column(db.Text)
+	pmt_type = db.Column(db.Integer, db.ForeignKey('payment_types.pmt_type_id'))
 
-class Payment_type(db.Model):
+class PaymentType(db.Model):
 
 	__tablename__ = "payment_types"
 
-	payment_id = db.Column(db.Integer, primary_key=True)
-	details = db.Column(db.Text)
+	pmt_type_id = db.Column(db.Integer, primary_key=True)
+	pmt_details = db.Column(db.Text)
 
 class Invoice(db.Model):
 
-	__tablename__ = "invoice"
+	__tablename__ = "invoices"
 
-	invoice_id = db.Column(db.Integer, primary_key=True)
-	invoice_number = db.Column(db.Text)
-	amount = db.Column(db.Integer)
-	vendor_id = db.Column(db.Integer, db.ForeignKey('vendors.vendor_id'))
-	payment_id = db.Column(db.Integer, db.ForeignKey('payments.payment_id'))
+	inv_id = db.Column(db.Integer, primary_key=True)
+	inv_number = db.Column(db.Text)
+	inv_amt = db.Column(db.Integer)
+	inv_vend_id = db.Column(db.Integer, db.ForeignKey('vendors.vend_id'))
+	inv_pmt_id = db.Column(db.Integer, db.ForeignKey('payments.pmt_id'))
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
