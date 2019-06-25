@@ -1,8 +1,7 @@
-"""Utility file to seed database with data in seed_data/"""
+"""Utility file to seed database with data in seed_data folder"""
 
-from datetime import datetime
 # from sqlalchemy import func
-from model import Vendors, Payment, Payment_type, Invoice
+from model import Vendor, Payment, PaymentType, Invoice
 from model import connect_to_db, db
 
 from server import app
@@ -19,12 +18,12 @@ def load_invoices():
     # Read invoice file and insert data
     for row in open("seed_data/invoice.txt"):
         row = row.rstrip()
-        vendor_id, invoice_number, amount, payment_id = row.split(",")
+        inv_number, inv_amt, inv_vend_id, inv_pmt_id = row.split(",")
 
-        invoice = Invoice(vendor_id=vendor_id,
-                    invoice_number=invoice_number,
-                    amount=amount,
-                    payment_id=payment_id)
+        invoice = Invoice(inv_number=inv_number,
+                    inv_amt=inv_amt,
+                    inv_vend_id=inv_vend_id,
+                    inv_pmt_id=inv_pmt_id)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(invoice)
@@ -40,16 +39,16 @@ def load_vendors():
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate vendors
-    Vendors.query.delete()
+    Vendor.query.delete()
 
     # Read vendor file and insert data
     for row in open("seed_data/vendor.txt"):
         row = row.rstrip()
-        vendor_name, billing_address, account_number = row.split(",")
+        vend_name, vend_address, user_vend_account = row.split(",")
 
-        vendor = Vendors(vendor_name=vendor_name,
-                    billing_address=billing_address,
-                    account_number=account_number)
+        vendor = Vendor(vend_name=vend_name,
+                    vend_address=vend_address,
+                    user_vend_account=user_vend_account)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(vendor)
@@ -70,11 +69,11 @@ def load_payments():
     # Read payment file and insert data
     for row in open("seed_data/payment.txt"):
         row = row.rstrip()
-        amount, date, payment_type = row.split(",")
+        pmt_amt, pmt_date, pmt_type = row.split(",")
 
-        payment = Payment(amount=amount,
-                    date=date,
-                    payment_type=payment_type)
+        payment = Payment(pmt_amt=pmt_amt,
+                    pmt_date=pmt_date,
+                    pmt_type=pmt_type)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(payment)
@@ -90,14 +89,14 @@ def load_payment_types():
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate payment types
-    Payment_type.query.delete()
+    PaymentType.query.delete()
 
     # Read payment file and insert data
     for row in open("seed_data/pmt_type.txt"):
-        row = row.rstrip()
-        # details = row.split(",")
-        details = row
-        pmt_type = Payment_type(details=details)
+
+        pmt_details = row.rstrip()
+
+        pmt_type = PaymentType(pmt_details=pmt_details)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(pmt_type)
